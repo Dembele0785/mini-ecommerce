@@ -10,10 +10,11 @@
         <a href="/products">Produits</a> |
         <a href="/contact">Contact</a>
     </nav>
+
     <ul>
-        <li>Produit 1</li>
-        <li>Produit 2</li>
-        <li>Produit 3</li>
+        {% for produit in produits %}
+            <li>{{ produit.name }} - {{ produit.price }} €</li>
+        {% endfor %}
     </ul>
 </body>
 </html>

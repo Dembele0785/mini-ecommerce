@@ -8,7 +8,12 @@ def home():
 
 @main.route("/products")
 def products():
-    return render_template("products.html")
+    produits = [
+        {"name": "Produit 1", "price": 10},
+        {"name": "Produit 2", "price": 20},
+        {"name": "Produit 3", "price": 30},
+    ]
+    return render_template("products.html", produits=produits)
 
 @main.route("/contact")
 def contact():
