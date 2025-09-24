@@ -12,9 +12,11 @@
     </nav>
 
     <ul>
-        {% for produit in produits %}
-            <li>{{ produit.name }} - {{ produit.price }} €</li>
-        {% endfor %}
+    {% for product in products %}
+        <li>{{ product.name }} - {{ product.price }} €</li>
+    {% else %}
+        <li>Aucun produit disponible</li>
+    {% endfor %}
     </ul>
 </body>
 </html>
