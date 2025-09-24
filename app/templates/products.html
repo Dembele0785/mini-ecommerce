@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <title>Produits - Mini E-commerce</title>
+    <meta charset="UTF-8">
+    <title>Nos Produits</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Nos Produits</h1>
-    <nav>
-        <a href="/">Accueil</a> |
-        <a href="/products">Produits</a> |
-        <a href="/contact">Contact</a>
-    </nav>
 
-    <ul>
+<h1>Nos Produits</h1>
+
+<div class="product-grid">
     {% for product in products %}
-        <li>{{ product.name }} - {{ product.price }} €</li>
+    <div class="product-card">
+        <h2>{{ product.name }}</h2>
+        <p>{{ product.price }} €</p>
+    </div>
     {% else %}
-        <li>Aucun produit disponible</li>
+    <p>Aucun produit disponible</p>
     {% endfor %}
-    </ul>
+</div>
+
 </body>
 </html>
