@@ -1,30 +1,20 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Nos Produits</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-
+{% extends "base.html" %}
+{% block content %}
 <h1>Nos Produits</h1>
-    <nav>
-        <a href="/">Accueil</a> |
-        <a href="/products">Produits</a> |
-        <a href="/contact">Contact</a>
-    </nav>
-
 <div class="product-grid">
     {% for product in products %}
     <div class="product-card">
-        <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}" width="180">
-        <h2>{{ product.name }}</h2>
-        <p>{{ product.price }} €</p>
+        <img src="{{ url_for('static', filename='images/' + product.image) }}" alt="{{ product.name }}">
+        <h3>{{ product.name }}</h3>
+        <p>{{ "%.2f" | format(product.price) }} €</p>
+        <form action="{{ url_for('main.add_to_cart') }}" method="post">
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <input type="number" name="quantity" value="1" min="1" style="width: 50px;">
+            <button type="submit">Ajouter au panier</button>
+        </form>
     </div>
     {% else %}
     <p>Aucun produit disponible</p>
     {% endfor %}
 </div>
-
-</body>
-</html>
+{% endblock %}

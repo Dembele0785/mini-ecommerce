@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Panier</h1>
+
+{% if items %}
+  <table border="1" cellpadding="8" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Produit</th>
+        <th>Prix</th>
+        <th>Quantité</th>
+        <th>Sous-total</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td>
+          <img src="{{ url_for('static', filename='images/' + item.product.image) }}" alt="{{ item.product.name }}" width="80">
+          <br>{{ item.product.name }}
+        </td>
+        <td>{{ '%.2f' % item.product.price }} €</td>
+        <td>
+          <form action="{{ url_for('main.update_cart') }}" method="post">
+            <input type="hidden" name="product_id" value="{{ item.product.id }}">
+            <input type="number" name="quantity" value="{{ item.quantity }}" min="0" style="width:60px;">
+            <button type="submit">Mettre à jour</button>
+          </form>
+        </td>
+        <td>{{ '%.2f' % item.subtotal }} €</td>
+        <td>
+          <a href="{{ url_for('main.remove_from_cart', product_id=item.product.id) }}">Retirer</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h3>Total : {{ '%.2f' % total }} €</h3>
+
+  <p>
+    <a href="{{ url_for('main.clear_cart') }}">Vider le panier</a>
+    <!-- futur : lien vers la page checkout -->
+  </p>
+
+{% else %}
+  <p>Votre panier est vide.</p>
+{% endif %}
+
+<p><a href="{{ url_for('main.index') }}">Retour aux produits</a></p>
+{% endblock %}
