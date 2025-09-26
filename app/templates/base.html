@@ -7,8 +7,9 @@
 <body>
     <nav>
         <a href="{{ url_for('main.index') }}">Accueil</a> |
+        <a href="{{ url_for('main.products') }}">Produits</a> |
         <a href="{{ url_for('main.cart') }}">Panier</a> |
-        <a href="/contact">Contact</a>
+        <a href="{{ url_for('main.contact') }}">Contact</a>
     </nav>
     <hr>
     {% with messages = get_flashed_messages(with_categories=true) %}

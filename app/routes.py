@@ -8,6 +8,11 @@ def index():
     products = Product.query.all()
     return render_template("index.html", products=products)
 
+@main.route("/products")
+def products():
+    products = Product.query.all()
+    return render_template("products.html", products=products)
+
 @main.route("/contact")
 def contact():
     return render_template("contact.html")
