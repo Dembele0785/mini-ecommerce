@@ -10,7 +10,7 @@
         <form action="{{ url_for('main.add_to_cart') }}" method="post">
             <input type="hidden" name="product_id" value="{{ product.id }}">
             <input type="number" name="quantity" value="1" min="1" style="width: 50px;">
-            <button type="submit">Ajouter au panier</button>
+            <button type="submit" class="btn">Ajouter au panier</button>
         </form>
     </div>
     {% else %}

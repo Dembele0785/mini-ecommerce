@@ -9,7 +9,8 @@
         <a href="{{ url_for('main.index') }}">Accueil</a> |
         <a href="{{ url_for('main.products') }}">Produits</a> |
         <a href="{{ url_for('main.cart') }}">Panier</a> |
-        <a href="{{ url_for('main.contact') }}">Contact</a>
+        <a href="{{ url_for('main.contact') }}">Contact</a> |
+        <a href="{{ url_for('main.login') }}">Se connecter</a>
     </nav>
     <hr>
     {% with messages = get_flashed_messages(with_categories=true) %}
@@ -22,5 +23,8 @@
         {% endif %}
     {% endwith %}
     {% block content %}{% endblock %}
+    <footer>
+        <p>© 2025, ziedembele</p>
+    </footer>
 </body>
 </html>

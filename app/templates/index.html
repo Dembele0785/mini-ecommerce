@@ -1,26 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Accueil - Mini E-commerce</title>
-</head>
-<body>
-    {% extends "base.html" %}
-    {% block content %}
-    <h1>Nos Produits</h1>
-    <div class="product-grid">
-        {% for product in products %}
-            <div class="product-card">
-                <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
-                <h3>{{ product.name }}</h3>
-                <p>{{ "%.2f" | format(product.price) }} €</p>
-                <form action="{{ url_for('main.add_to_cart') }}" method="post">
-                    <input type="hidden" name="product_id" value="{{ product.id }}">
-                    <input type="number" name="quantity" value="1" min="1" style="width: 50px;">
-                    <button type="submit">Ajouter au panier</button>
-                </form>
-            </div>
-        {% endfor %}
+{% extends "base.html" %}
+{% block content %}
+<div class="hero">
+    <h1>Bienvenue dans notre boutique</h1>
+    <p>Découvrez nos meilleurs produits et offres spéciales.</p>
+    <a href="{{ url_for('main.products') }}" class="btn">Voir tous les produits</a>
+</div>
+
+<h2>Produits populaires</h2>
+<div class="product-grid">
+    {% for product in products %}
+    <div class="product-card">
+        <img src="{{ url_for('static', filename=product.image) }}" alt="{{ product.name }}">
+        <h3>{{ product.name }}</h3>
+        <p>{{ "%.2f" | format(product.price) }} €</p>
+        <form action="{{ url_for('main.add_to_cart') }}" method="post">
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <input type="number" name="quantity" value="1" min="1" style="width: 50px;">
+            <button type="submit">Ajouter au panier</button>
+        </form>
     </div>
-    {% endblock %}
-</body>
-</html>
+    {% endfor %}
+</div>
+{% endblock %}

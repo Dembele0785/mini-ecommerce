@@ -5,7 +5,7 @@ main = Blueprint('main', __name__)
 
 @main.route("/")
 def index():
-    products = Product.query.all()
+    products = Product.query.limit(3).all()
     return render_template("index.html", products=products)
 
 @main.route("/products")
@@ -107,3 +107,8 @@ def clear_cart():
     session.pop("cart", None)
     flash("Panier vidé.", "info")
     return redirect(url_for("main.index"))
+
+
+@main.route("/login", methods=['GET', 'POST'])
+def login():
+    return render_template("login.html")
