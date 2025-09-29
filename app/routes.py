@@ -1,7 +1,25 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash
-from .models import Product
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash, g
+from .models import Product, User
+from . import db
+import functools
 
 main = Blueprint('main', __name__)
+
+@main.before_app_request
+def load_logged_in_user():
+    user_id = session.get('user_id')
+    if user_id is None:
+        g.user = None
+    else:
+        g.user = User.query.get(user_id)
+
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return redirect(url_for('main.login'))
+        return view(**kwargs)
+    return wrapped_view
 
 @main.route("/")
 def index():
@@ -111,4 +129,78 @@ def clear_cart():
 
 @main.route("/login", methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        user = User.query.filter_by(username=username).first()
+
+        if user and user.check_password(password):
+            session['user_id'] = user.id
+            flash('Connexion réussie !', 'success')
+            return redirect(url_for('main.index'))
+        else:
+            flash('Identifiant ou mot de passe incorrect.', 'error')
+
     return render_template("login.html")
+
+
+@main.route("/register", methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        username = request.form.get('username')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm_password')
+
+        if password != confirm_password:
+            flash('Les mots de passe ne correspondent pas.', 'error')
+            return redirect(url_for('main.register'))
+
+        user = User.query.filter_by(username=username).first()
+        if user:
+            flash('Ce nom d\'utilisateur existe déjà.', 'error')
+            return redirect(url_for('main.register'))
+
+        new_user = User(username=username, first_name=first_name, last_name=last_name)
+        new_user.set_password(password)
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash('Inscription réussie ! Vous pouvez maintenant vous connecter.', 'success')
+        return redirect(url_for('main.login'))
+
+    return render_template("register.html")
+
+@main.route("/logout")
+def logout():
+    session.clear()
+    flash('Vous avez été déconnecté.', 'info')
+    return redirect(url_for('main.index'))
+
+@main.route("/profile", methods=['GET', 'POST'])
+@login_required
+def profile():
+    if request.method == 'POST':
+        action = request.form.get('action')
+        if action == 'update_profile':
+            g.user.first_name = request.form.get('first_name')
+            g.user.last_name = request.form.get('last_name')
+            g.user.username = request.form.get('username')
+            db.session.commit()
+            flash('Profil mis à jour.', 'success')
+        elif action == 'change_password':
+            current_password = request.form.get('current_password')
+            new_password = request.form.get('new_password')
+            confirm_new_password = request.form.get('confirm_new_password')
+
+            if not g.user.check_password(current_password):
+                flash('Mot de passe actuel incorrect.', 'error')
+            elif new_password != confirm_new_password:
+                flash('Les nouveaux mots de passe ne correspondent pas.', 'error')
+            else:
+                g.user.set_password(new_password)
+                db.session.commit()
+                flash('Mot de passe mis à jour.', 'success')
+        return redirect(url_for('main.profile'))
+    return render_template("profile.html")

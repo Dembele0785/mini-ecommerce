@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Nos Produits</h1>
+<h1>Tous les produits.</h1>
 <div class="product-grid">
     {% for product in products %}
     <div class="product-card">
@@ -9,8 +9,8 @@
         <p>{{ "%.2f" | format(product.price) }} €</p>
         <form action="{{ url_for('main.add_to_cart') }}" method="post">
             <input type="hidden" name="product_id" value="{{ product.id }}">
-            <input type="number" name="quantity" value="1" min="1" style="width: 50px;">
-            <button type="submit" class="btn">Ajouter au panier</button>
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" class="btn">Acheter</button>
         </form>
     </div>
     {% else %}

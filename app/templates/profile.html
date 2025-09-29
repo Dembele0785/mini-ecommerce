@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="login-container">
+    <h2>Profil</h2>
+    <form method="post">
+        <h3>Mettre à jour les informations</h3>
+        <div class="form-group">
+            <label for="first_name">Prénom</label>
+            <input type="text" id="first_name" name="first_name" value="{{ g.user.first_name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="last_name">Nom</label>
+            <input type="text" id="last_name" name="last_name" value="{{ g.user.last_name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="username">Identifiant</label>
+            <input type="text" id="username" name="username" value="{{ g.user.username }}" required>
+        </div>
+        <button type="submit" name="action" value="update_profile" class="btn">Mettre à jour les informations</button>
+
+        <h3>Changer le mot de passe</h3>
+        <div class="form-group">
+            <label for="current_password">Mot de passe actuel</label>
+            <input type="password" id="current_password" name="current_password">
+        </div>
+        <div class="form-group">
+            <label for="new_password">Nouveau mot de passe</label>
+            <input type="password" id="new_password" name="new_password">
+        </div>
+        <div class="form-group">
+            <label for="confirm_new_password">Confirmer le nouveau mot de passe</label>
+            <input type="password" id="confirm_new_password" name="confirm_new_password">
+        </div>
+        <button type="submit" name="action" value="change_password" class="btn">Changer le mot de passe</button>
+    </form>
+</div>
+{% endblock %}

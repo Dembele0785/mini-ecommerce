@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="hero">
-    <h1>Bienvenue dans notre boutique</h1>
-    <p>Découvrez nos meilleurs produits et offres spéciales.</p>
+    <h1>Le meilleur de la technologie.</h1>
+    <p>Conçu pour vous, par nous.</p>
     <a href="{{ url_for('main.products') }}" class="btn">Voir tous les produits</a>
 </div>
 
@@ -15,8 +15,8 @@
         <p>{{ "%.2f" | format(product.price) }} €</p>
         <form action="{{ url_for('main.add_to_cart') }}" method="post">
             <input type="hidden" name="product_id" value="{{ product.id }}">
-            <input type="number" name="quantity" value="1" min="1" style="width: 50px;">
-            <button type="submit">Ajouter au panier</button>
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" class="btn">Acheter</button>
         </form>
     </div>
     {% endfor %}
